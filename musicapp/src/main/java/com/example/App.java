@@ -1,6 +1,6 @@
 package com.example;
 
-import static javax.sound.sampled.AudioSystem.*;
+//import static javax.sound.sampled.AudioSystem.*;
 
 import java.io.*;
 import java.util.*;
@@ -16,31 +16,26 @@ import org.json.simple.parser.*;
 // declares a class for the app
 public class App 
 {
+
+    // to store current position
+    Long currentFrame;
+    Clip clip;
+
     // global variables for the app
-    String status;
-    Long position;
+    static String status="main";
+    static Long position;
+    static Integer songIndex=0;
     static Clip audioClip;
 
-    /*
-    *** IMPORTANT NOTE FOR ALL STUDENTS *******
+    AudioInputStream audioInputStream;
 
+    /*
+    *** IMPORTANT NOTE  ***
     This next line of code is a "path" that students will need to change in order to play music on their
     computer.  The current path is for my laptop, not yours.
-    
-    If students who do not understand whre files are located on their computer or how paths work on their computer, 
-    should immediately complete the extra credit on "Folders and Directories" in the canvas modules.  
-    
-    Knowing how paths work is fundamental knowledge for using a computer as a technical person.
-
-    Students who do not know what a path are often not able complete this assignment succesfullly.  Please
-    do the extra credit if you are confused. :)  
-    
-    Thank you!  -Gabriel
-
     */
-
     private static String basePath =
-    "C:/Users/jerom/Documents/GitHub/class-java/spotify-like-app/demo/src/main/java/com/example/";
+    "C:\\Users\\vk102789\\.vscode\\projects\\musicApp\\musicapp\\src\\main\\java\\com\\example";
     
     // "main" makes this class a java app that can be executed
     public static void main( String[] args )
@@ -53,23 +48,26 @@ public class App
 
         String userInput = "";
         while (!userInput.equals("q")) {
-        menu();
+          
+          menu();
 
-        // get input
-        userInput = input.nextLine();
-
-        // accept upper or lower case commands
-        userInput = userInput.toLowerCase();
-
-        // do something
-        handleMenu(userInput, library);
+            // get input
+            userInput = input.nextLine();
+  
+            // accept upper or lower case commands
+            userInput = userInput.toLowerCase();
+  
+            // do something
+            handleMenu(userInput, library, songIndex);
+          
+          
         }
 
         // close the scanner
         input.close();
     }
 
-    /*
+  /*
    * displays the menu for the app
    */
   public static void menu() {
@@ -77,7 +75,14 @@ public class App
     System.out.println("[H]ome");
     System.out.println("[S]earch by title");
     System.out.println("[L]ibrary");
-    System.out.println("[P]lay");
+    if(status == "main" || status == "paused"){
+      System.out.println("[P]lay");
+    } else if (status == "play"){
+      System.out.println("[P]ause");
+      System.out.println("[S]top");
+    }
+    
+
     System.out.println("[Q]uit");
 
     System.out.println("");
@@ -87,7 +92,7 @@ public class App
   /*
    * handles the user input for the app
    */
-  public static void handleMenu(String userInput, JSONArray library) {
+  public static void handleMenu(String userInput, JSONArray library, Integer songIndex) {
     switch (userInput) {
       case "h":
         System.out.println("-->Home<--");
@@ -97,10 +102,15 @@ public class App
         break;
       case "l":
         System.out.println("-->Library<--");
+        playList(library);
         break;
       case "p":
         System.out.println("-->Play<--");
-        play(library);
+        if(status == "play"){
+          pause();
+        } else{
+          play(library, songIndex);
+        }
         break;
       case "q":
         System.out.println("-->Quit<--");
@@ -111,13 +121,46 @@ public class App
   }
 
   /*
-   * plays an audio file
+   * playlist function
    */
+  public static void playList(JSONArray library){
+
+  }
+
+  /*
+   * plays spefic song in playlist
+   * Overloaded function takes a library and song number
+   */
+
+  // Method to play the audio
   public static void play(JSONArray library) {
+
+    //start the clip
+    audioClip.start();
+      
+    status = "play";
+  }
+
+// Method to pause the audio
+public static void pause() 
+{
+    if (status.equals("paused")) 
+    {
+        System.out.println("audio is already paused");
+        return;
+    }
+    position = audioClip.getMicrosecondPosition();
+    audioClip.stop();
+    status = "paused";
+}
+
+
+  /*
+   * plays an audio files
+   */
+  public static void play(JSONArray library, Integer songIndex) {
     // open the audio file
 
-    // get the filePath and open a audio file
-    final Integer songIndex = 3;
     JSONObject obj = (JSONObject) library.get(songIndex);
     final String filename = (String) obj.get("filename");
     final String filePath = basePath + "/wav/" + filename;
@@ -141,6 +184,8 @@ public class App
     } catch (Exception e) {
       e.printStackTrace();
     }
+
+    status = "play";
   }
 
   //

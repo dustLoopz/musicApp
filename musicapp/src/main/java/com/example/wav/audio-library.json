@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Cement Lunch",
+    "artist": "Ava Luna",
+	  "filename": "ava-luna-crop.wav"
+  },
+  {
+    "name": "Journey of King",
+    "artist": "Bisou",
+    "filename": "bisou-crop.wav"
+  },
+  {
+    "name": "Tanzen",
+    "artist": "Checkie Brown",
+	  "filename": "checkie-brown1-crop.wav"
+  },
+  {
+    "name": "Wirklich Wichtig",
+    "artist": "Checkie Brown",
+	  "filename": "checkie-brown2-crop.wav"
+  },
+  {
+    "name": "Welcome",
+    "artist": "Kitkat Club",
+	  "filename": "kitkat-crop.wav"
+  },
+  {
+    "name": "El Preso Numero Nueve",
+    "artist": "Kathleen Martin",
+    "filename": "kathleen-crop.wav"
+  },
+  {
+    "name": "Storybook",
+    "artist": "Scott Holmes",
+    "filename": "scott-crop.wav"
+  },
+  {
+    "name": "Burn-It-Down",
+    "artist": "Mid Air Machine",
+    "filename": "mid-air-crop.wav"
+  },
+  {
+    "name": "Vacaciones Salsa",
+    "artist": "Dee Yan",
+    "filename": "dee-yan-crop.wav"
+  },
+  {
+    "name": "Zumbido",
+    "artist": "The Dubbstyle",
+    "filename": "dubb-style-crop.wav"
+  }
+]
