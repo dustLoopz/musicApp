@@ -24,10 +24,6 @@ import org.json.simple.parser.*;
 public class App 
 {
 
-    // to store current position
-    Long currentFrame;
-    Clip clip;
-
     // global variables for the app
     static String status="main";
     static Long position;
@@ -54,18 +50,22 @@ public class App
         Scanner input = new Scanner(System.in);
 
         String userInput = "";
-        while (!userInput.equals("q")) {
+        while (!userInput.equals("q") || status == "quit") {
           
           menu();
 
-            // get input
-            userInput = input.nextLine();
+          // get input
+          userInput = input.nextLine();
   
-            // accept upper or lower case commands
-            userInput = userInput.toLowerCase();
-  
-            // do something
-            handleMenu(userInput, library, songIndex);
+          // accept upper or lower case commands
+          userInput = userInput.toLowerCase();
+
+          if (userInput.equals("l") ){
+            songIndex = playList(input, library);
+            userInput = "p";
+          }
+
+          handleMenu(userInput, library, songIndex);
           
           
         }
@@ -93,7 +93,6 @@ public class App
       System.out.println("[P]lay");
       System.out.println("[S]top");
     }
-    
 
     System.out.println("[Q]uit");
 
@@ -114,7 +113,7 @@ public class App
         break;
       case "l":
         System.out.println("-->Library<--");
-        playList(library);
+        //playList(library);
         break;
       case "p":
         System.out.println("-->Play<--");
@@ -127,6 +126,7 @@ public class App
       case "s":
         System.out.println("-->Stop<--");
         stop();
+        break;
       case "q":
         System.out.println("-->Quit<--");
         break;
@@ -138,8 +138,17 @@ public class App
   /*
    * playlist function
    */
-  public static void playList(JSONArray library){
+  public static Integer playList(Scanner userInput, JSONArray library){
 
+    int max=library.size();
+    System.out.println("Max: " + max);
+    Integer index;
+
+    System.out.println("--------->Playlist<---------");
+    System.out.println("Enter number of song to play:");
+    index = getNumber(userInput, max);
+
+    return index;
   }
 
   /*
@@ -211,6 +220,8 @@ public static void pause()
       e.printStackTrace();
     }
 
+    System.out.println(library.get(songIndex).toString());
+
     status = "play";
   }
 
@@ -254,4 +265,32 @@ public static void pause()
 
     return jsonData;
   }
+
+
+  // Get value from user
+	private static Integer getNumber(Scanner userInput, int max) {
+		Boolean success = true;
+		Integer output=0;
+
+		do{
+			try {
+				System.out.println("Please enter song number to play:");
+				output = userInput.nextInt();
+        if (output < 0 || output > max-1){
+          System.out.println("That song doesn't exist!");
+          success=false;
+        } else{
+          success = true;
+        }
+				
+			//Invalid input exception caught to prevent program crashing
+			} catch(Exception e) {                                   			
+				System.out.println("Invalid Input!");
+				success = false;                                     //Setting false flag
+				userInput.next();                                    //Clearing Buffer
+			}   
+		} while(success == false);
+		userInput.nextLine(); 
+		return output;
+    }
 }
