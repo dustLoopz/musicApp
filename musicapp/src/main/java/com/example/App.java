@@ -1,10 +1,17 @@
 package com.example;
 
-//import static javax.sound.sampled.AudioSystem.*;
+import static javax.sound.sampled.AudioSystem.*;
+import javax.sound.sampled.*;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
 
 import java.io.*;
 import java.util.*;
-import javax.sound.sampled.*;
+import java.io.IOException;
+
 import org.json.simple.*;
 import org.json.simple.parser.*;
 
@@ -73,12 +80,17 @@ public class App
   public static void menu() {
     System.out.println("---- SpotifyLikeApp ----");
     System.out.println("[H]ome");
-    System.out.println("[S]earch by title");
+    
+    System.out.println("[F]ind by title");
     System.out.println("[L]ibrary");
-    if(status == "main" || status == "paused"){
+
+    if(status == "main"){
       System.out.println("[P]lay");
     } else if (status == "play"){
       System.out.println("[P]ause");
+      System.out.println("[S]top");
+    } else if (status == "paused"){
+      System.out.println("[P]lay");
       System.out.println("[S]top");
     }
     
@@ -97,7 +109,7 @@ public class App
       case "h":
         System.out.println("-->Home<--");
         break;
-      case "s":
+      case "f":
         System.out.println("-->Search by title<--");
         break;
       case "l":
@@ -112,6 +124,9 @@ public class App
           play(library, songIndex);
         }
         break;
+      case "s":
+        System.out.println("-->Stop<--");
+        stop();
       case "q":
         System.out.println("-->Quit<--");
         break;
@@ -140,6 +155,17 @@ public class App
       
     status = "play";
   }
+
+// Method to stop the audio
+public static void stop() 
+//throws UnsupportedAudioFileException, IOException, LineUnavailableException 
+{
+    position = 0L;
+    audioClip.stop();
+    audioClip.close();
+
+    status = "main";
+}
 
 // Method to pause the audio
 public static void pause() 
