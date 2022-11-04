@@ -95,6 +95,7 @@ public class App
     System.out.println("[F]ind by title");
     System.out.println("[L]ibrary");
 
+    //Additional Menu Options for Play
     if(status == "main"){
       System.out.println("[P]lay");
     } else if (status == "play"){
@@ -124,7 +125,6 @@ public class App
         break;
       case "l":
         System.out.println("-->Library<--");
-        //playList(library);
         break;
       case "p":
         System.out.println("-->Play<--");
@@ -150,9 +150,11 @@ public class App
    * Find Song function
    */
   public static Integer findSong(Scanner userInput, JSONArray library){
+
     int max=library.size();
     Integer index=-1;
 
+    System.out.println("Please enter song to search: ");
     String name = userInput.nextLine();
 
     System.out.println("--------->Searching<---------");
@@ -177,16 +179,12 @@ public class App
     for(int i = 1; i < max; i++){
       System.out.println("[" + i + "]: " + library.get(i-1).toString());
     }
+
     System.out.println("\nEnter number of song to play:");
     index = getNumber(userInput, max);
 
     return index;
   }
-
-  /*
-   * plays spefic song in playlist
-   * Overloaded function takes a library and song number
-   */
 
   // Method to play the audio
   public static void play(JSONArray library) {
@@ -198,8 +196,7 @@ public class App
   }
 
 // Method to stop the audio
-public static void stop() 
-//throws UnsupportedAudioFileException, IOException, LineUnavailableException 
+public static void stop()
 {
     position = 0L;
     audioClip.stop();
@@ -322,7 +319,9 @@ public static void pause()
 				userInput.next();                                    //Clearing Buffer
 			}   
 		} while(success == false);
+
 		userInput.nextLine(); 
+    
 		return output;
     }
 }
