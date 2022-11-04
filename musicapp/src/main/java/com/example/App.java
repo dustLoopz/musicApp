@@ -145,7 +145,10 @@ public class App
     Integer index;
 
     System.out.println("--------->Playlist<---------");
-    System.out.println("Enter number of song to play:");
+    for(int i = 1; i < max; i++){
+      System.out.println("[" + i + "]: " + library.get(i-1).toString());
+    }
+    System.out.println("\nEnter number of song to play:");
     index = getNumber(userInput, max);
 
     return index;
