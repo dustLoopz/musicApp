@@ -63,6 +63,17 @@ public class App
           if (userInput.equals("l") ){
             songIndex = playList(input, library);
             userInput = "p";
+          } else if (userInput.equals("f")){
+            Integer index = findSong(input, library);
+            if ( index == -1){
+              System.out.println("Song not found");
+              userInput = "h";
+            } else{
+              System.out.println("Song playing");
+              userInput = "p";
+              songIndex = index;
+            }
+            
           }
 
           handleMenu(userInput, library, songIndex);
@@ -136,12 +147,30 @@ public class App
   }
 
   /*
+   * Find Song function
+   */
+  public static Integer findSong(Scanner userInput, JSONArray library){
+    int max=library.size();
+    Integer index=-1;
+
+    String name = userInput.nextLine();
+
+    System.out.println("--------->Searching<---------");
+    for(int i = 0; i < max-1; i++){
+      if(library.get(i).toString().contains(name)){
+        index = i;
+      }
+    }
+
+    return index;
+  }
+
+  /*
    * playlist function
    */
   public static Integer playList(Scanner userInput, JSONArray library){
 
     int max=library.size();
-    System.out.println("Max: " + max);
     Integer index;
 
     System.out.println("--------->Playlist<---------");
