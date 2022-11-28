@@ -62,17 +62,17 @@ public class gui {
           final JMenu m1 = new JMenu("List");
           mb.add(m1);
           
-          //Initialize Favorites to False
-          for(int i = 0; i < 9; i++){
-               favorites.put(songIndex,false);
-          }
+          
 
           play.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent e){
 
                if (songIndex != -1){
                     play(library, songIndex);
-                    ta.setText("Song Playing: " + library.get(songIndex).toString()+
-                               "\nFavorite: " + favorites.get(songIndex));
+                    ta.setText("Song Playing: " + library.get(songIndex).toString());
+                    if(favorites.get(songIndex)){
+                         ta.setText("Song Playing: " + library.get(songIndex).toString() + " '\u2661' \n");
+                    }
+                         
                } else{
                     ta.setText("Song not Found");
                }
@@ -142,11 +142,13 @@ public class gui {
                }
 
                int max=library.size();
-               String playList = "--------------------->Playlist<---------------------\n";
+               String playList = "------------------------>Playlist<-------------------------";
                
                for(int i = 1; i < max; i++){
-                    playList += "[" + i + "]: " + library.get(i-1).toString() + "\n" ;
-                    
+                    playList += "\n[" + i + "]: " + library.get(i-1).toString();
+                    if(favorites.get(i)){
+                         playList +=" '\u2661'";
+                    }
                     m1.add("[" + i + "]: " + library.get(i-1).toString());
                     final int songNumber = i-1; 
                     JMenuItem item = m1.getItem(i-1);
@@ -188,6 +190,11 @@ public class gui {
 
           // create a scanner for user input
           Scanner input = new Scanner(System.in);
+          
+          //Initialize Favorites to False
+          for(int i = 1; i < 10; i++){
+               favorites.put(i,false);
+          }
 
           musicApp(input, library);
      }
