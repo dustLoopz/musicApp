@@ -51,6 +51,8 @@ public class gui {
           JButton play = new JButton("Play");
           JButton stop = new JButton("Stop");
           JButton pause = new JButton("Pause");
+          JButton forward = new JButton("FWD");
+          JButton rewind = new JButton("RWD");
           JButton search = new JButton("Search");
           JButton quit = new JButton("Quit");
           JButton list = new JButton("List");
@@ -85,6 +87,16 @@ public class gui {
           pause.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent e){
                pause();
                ta.setText("Song Paused");
+          }});
+
+          forward.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent e){
+               forward();
+               ta.setText("Song Advanced");
+          }});
+
+          rewind.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent e){
+               rewind();
+               ta.setText("Song Rewinded");
           }});
 
           quit.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent e){
@@ -157,7 +169,9 @@ public class gui {
           panel.add(tf);
           panel.add(fav);       
           panel.add(play);
+          panel.add(rewind);
           panel.add(pause);
+          panel.add(forward);
           panel.add(stop);
           panel.add(quit);
 
@@ -183,7 +197,7 @@ public class gui {
           //Creating a JSONObject object
           //JSONObject jsonObject = new JSONObject();
           //jsonObject.put("key", "value");
-          // FileWriter file = new FileWriter("E:/output.json");
+          // FileWriter file = new FileWriter("C:/output.json");
           //file.write(jsonObject.toJSONString());
           //file.close();
      }
@@ -218,15 +232,44 @@ public class gui {
      public static void pause() 
      {
           position = audioClip.getMicrosecondPosition();
-          System.out.println(position);
+          //System.out.println(position);
           audioClip.stop();
   
      }
  
- 
-   /*
-    * plays an audio files
-    */
+     // Method to pause the audio
+     public static void rewind() 
+     {
+          position = audioClip.getMicrosecondPosition();
+          //System.out.println("Start Position: " +position);
+          if (position < 5000000L){
+               position = 0L;
+          } else {
+               position -= 5000000L;
+          }
+          audioClip.setMicrosecondPosition(position);
+          
+  
+     }
+
+     // Method to pause the audio
+     public static void forward() 
+     {
+          position = audioClip.getMicrosecondPosition();
+          //System.out.println("Start Position: " +position);
+          if (position > audioClip.getMicrosecondLength()-5000000L){
+               position = audioClip.getMicrosecondLength()-1000000L;
+          } else{
+               position += 5000000L;
+          }
+          audioClip.setMicrosecondPosition(position);
+          
+          
+     }
+
+     /*
+     * plays an audio files
+     */
    public static void play(JSONArray library, Integer songIndex) {
      // open the audio file
  
